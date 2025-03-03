@@ -16,9 +16,9 @@ Files included:
 
 - visualization.py: Contains code to visualize results as a heatmap
 
-- `Scores/`: Contains scoring for all decks in terms of total cards (C_WINS, C_LOSSES, C_TIES) and by tricks (T_WINS, T_LOSSES, T_TIES). Also contains `seeds+num_cards`, where seeds and associated number of cards are stored.
+- `Scores/`: Contains scoring for all decks in terms of total cards (C_WINS.npy, C_LOSSES.npy, C_TIES.npy) and by tricks (T_WINS.npy, T_LOSSES.npy, T_TIES.npy). Also contains `seeds+num_cards/`, where seeds and associated number of cards are stored.
 
-- `Decks`: 
+- `Decks/`: 
     -  `to_load/`: Where decks are store temporarily before scoring but after generation
     - `loaded/`: Where scored decks are stored. Note: I have deleted all stored decks in order to push to github, but can still be verified through seed, numdecks, and score tables
 
