@@ -9,29 +9,29 @@ class Deck_Array():
         self.num_decks = num_decks
         self.seed = self.get_seed()
         
-        self.T_Wins = np.zeros((8, 8))
-        self.T_Losses = np.zeros((8, 8))
-        self.T_Ties = np.zeros((8, 8))
-        self.C_Wins = np.zeros((8, 8))
-        self.C_Losses = np.zeros((8, 8))
-        self.C_Ties = np.zeros((8, 8))
+        self.T_Wins = np.zeros((8, 8), dtype = int)
+        self.T_Losses = np.zeros((8, 8), dtype = int)
+        self.T_Ties = np.zeros((8, 8), dtype = int)
+        self.C_Wins = np.zeros((8, 8), dtype = int)
+        self.C_Losses = np.zeros((8, 8), dtype = int)
+        self.C_Ties = np.zeros((8, 8), dtype = int)
 
         self.decks_array = self.get_decks_array()
         self.save_decks_array()
         return
         
     def get_seed(self):
-        if not os.path.exists('src/Decks/seeds+num_cards/used_seeds.npy'):
+        if not os.path.exists('src/Decks/used_seeds.npy'):
             used_seeds = np.array([-1])
             deck_lengths = np.array([0])
         else:
-            used_seeds = np.load('src/Decks/seeds+num_cards/used_seeds.npy')
-            deck_lengths = np.load('src/Decks/seeds+num_cards/deck_lengths.npy')
+            used_seeds = np.load('src/Decks/used_seeds.npy')
+            deck_lengths = np.load('src/Decks/deck_lengths.npy')
         seed = used_seeds[-1]+1
         used_seeds = np.append(used_seeds, seed)
         deck_lengths = np.append(deck_lengths, self.num_decks)
-        np.save('src/Decks/seeds+num_cards/deck_lengths.npy', deck_lengths)
-        np.save('src/Decks/seeds+num_cards/used_seeds.npy', used_seeds)
+        np.save('src/Decks/deck_lengths.npy', deck_lengths)
+        np.save('src/Decks/used_seeds.npy', used_seeds)
         return int(seed)
    
 
@@ -54,35 +54,17 @@ class Deck_Array():
         np.save(path, self.decks_array)
         return
 
-    
-    def run_all_games(self, deck:np.array) -> None:
-        '''
-        Function runs all possible matchups on given deck, updates WINS, LOSSES, and TIES
-        '''
-        
-        for i, p1 in enumerate(ALL_PLAYERS):
-            for j, p2 in enumerate(ALL_PLAYERS):
-                if p1 <= p2: continue
-                p1_tricks, p1_cards, p2_tricks, p2_cards = score_game(p1, p2, deck)
-                
-                if p1_tricks > p2_tricks:
-                    self.T_Wins[i, j] += 1
-                elif p1_tricks < p2_tricks:
-                    self.T_Losses[i, j] += 1
-                elif p1_tricks == p2_tricks:
-                    self.T_Ties[i, j] += 1
-        
-                if p1_cards > p2_cards:
-                    self.C_Wins[i, j] += 1
-                elif p1_cards < p2_cards:
-                    self.C_Losses[i, j] += 1
-                elif p1_cards == p2_cards:
-                    self.C_Ties[i, j] += 1
-        return
-
-    def run_decks_array(self) -> None:
+    def run_decks_array(self) -> None:        
         for deck in tqdm(self.decks_array):
-                self.run_all_games(deck)
+
+            tricks, cards = add_tricks(deck)
+
+            self.T_Wins[(tricks>tricks.T)==True]+=1
+            self.T_Losses[(tricks<tricks.T)==True]+=1
+
+            self.C_Wins[(cards>cards.T)==True]+=1
+            self.C_Losses[(cards<cards.T)==True]+=1
+
         self.save_scores()
         path = PATH_TO_LOAD + f"seed_{self.seed}.npy"
         os.rename(path, path.replace(PATH_TO_LOAD, PATH_LOADED))

@@ -26,31 +26,31 @@ def debugger_factory(show_args = True) -> Callable:
     return debugger
 
 def get_complete_tables():
-    T_Wins = np.zeros((8, 8))
-    T_Losses = np.zeros((8, 8))
-    T_Ties = np.zeros((8, 8))
-    C_Wins = np.zeros((8, 8))
-    C_Losses = np.zeros((8, 8))
-    C_Ties = np.zeros((8, 8))
+    T_Wins = np.zeros((8, 8), dtype = int)
+    T_Losses = np.zeros((8, 8), dtype = int)
+    T_Ties = np.zeros((8, 8), dtype = int)
+    C_Wins = np.zeros((8, 8), dtype = int)
+    C_Losses = np.zeros((8, 8), dtype = int)
+    C_Ties = np.zeros((8, 8), dtype = int)
     
     for table in TABLES_PATHS:
         for file in os.listdir(SCORES_PATH + table):
             if file == '.DS_Store': continue
             new_table = np.load(SCORES_PATH + table + file)
             if table == 'T_WINS/':T_Wins += new_table
-            elif table == 'T_LOSSES/':T_Losses += new_table  
-            elif table == 'T_TIES/':T_Ties += new_table  
+            elif table == 'T_LOSSES/':T_Losses += new_table   
             elif table == 'C_WINS/':C_Wins += new_table  
             elif table == 'C_LOSSES/':C_Losses += new_table 
-            elif table == 'C_TIES/':C_Ties += new_table
+            
+    
     labels = list(map(str, ALL_PLAYERS))
     T_Wins = pd.DataFrame(T_Wins, labels, labels)
     T_Losses = pd.DataFrame(T_Losses, labels, labels)
-    T_Ties = pd.DataFrame(T_Ties, labels, labels)
+    
     C_Wins = pd.DataFrame(C_Wins, labels, labels)
     C_Losses = pd.DataFrame(C_Losses, labels, labels)
-    C_Ties = pd.DataFrame(C_Ties, labels, labels)
-    return T_Wins, T_Losses, T_Ties, C_Wins, C_Losses, C_Ties
+    
+    return T_Wins, T_Losses, C_Wins, C_Losses
 
 def get_converged_decimal():
 
