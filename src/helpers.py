@@ -8,8 +8,6 @@ HALF_DECK_SIZE = 26
 PATH_TO_LOAD = 'src/Decks/to_load/'
 PATH_LOADED = 'src/Decks/loaded/'
 SCORES_PATH = 'src/SCORES/'
-TABLES_PATHS = ['T_WINS/', 'T_LOSSES/', 'T_TIES/', 'C_WINS/', 'C_LOSSES/', 'C_TIES/']
-ALL_PLAYERS =[[0,0,0], [0,0,1], [0,1,0], [0,1,1], [1,0,0], [1,0,1], [1,1,0], [1,1,1]]
 
 def debugger_factory(show_args = True) -> Callable:
     def debugger(func: Callable) -> Callable:
@@ -25,69 +23,32 @@ def debugger_factory(show_args = True) -> Callable:
         return wrapper
     return debugger
 
-def get_complete_tables():
-    T_Wins = np.zeros((8, 8), dtype = int)
-    T_Losses = np.zeros((8, 8), dtype = int)
-    T_Ties = np.zeros((8, 8), dtype = int)
-    C_Wins = np.zeros((8, 8), dtype = int)
-    C_Losses = np.zeros((8, 8), dtype = int)
-    C_Ties = np.zeros((8, 8), dtype = int)
-    
-    for table in TABLES_PATHS:
-        for file in os.listdir(SCORES_PATH + table):
-            if file == '.DS_Store': continue
-            new_table = np.load(SCORES_PATH + table + file)
-            if table == 'T_WINS/':T_Wins += new_table
-            elif table == 'T_LOSSES/':T_Losses += new_table   
-            elif table == 'C_WINS/':C_Wins += new_table  
-            elif table == 'C_LOSSES/':C_Losses += new_table 
+def clear_all() -> None:
+    '''
+    Clears all Decks, Seeds, Visualizations, Decks Lengths
+    '''
+
+    for file in os.listdir(PATH_TO_LOAD):
+        if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
+            os.remove(PATH_TO_LOAD + file)
             
+    for file in os.listdir(PATH_LOADED):
+        if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
+            os.remove(PATH_LOADED + file)
+
+    for file in os.listdir(SCORES_PATH):
+        if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
+            os.remove(SCORES_PATH + file)
+
+    for file in os.listdir('src/' + 'Deck_Counts/'):
+        if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
+            os.remove('src/' + 'Deck_Counts/' + file)
+
+    if os.path.exists('src/used_seeds.npy'):
+        os.remove('src/used_seeds.npy')
+
+    for file in os.listdir('figures/'):
+        if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
+            os.remove('figures/' + file)
     
-    labels = list(map(str, ALL_PLAYERS))
-    T_Wins = pd.DataFrame(T_Wins, labels, labels)
-    T_Losses = pd.DataFrame(T_Losses, labels, labels)
-    
-    C_Wins = pd.DataFrame(C_Wins, labels, labels)
-    C_Losses = pd.DataFrame(C_Losses, labels, labels)
-    
-    return T_Wins, T_Losses, C_Wins, C_Losses
-
-def get_converged_decimal():
-
-    T_Wins, T_Losses, T_Ties, C_Wins, C_Losses, C_Ties = get_complete_tables()
-    Total = T_Wins+T_Losses+T_Ties
-    Total = Total+Total.T
-
-    Tricks = T_Wins + T_Losses.T
-    Tricks = Tricks/Total
-
-    i_tricks = 0
-    converged = True
-    while converged == True:
-        i_tricks+=1
-        for x in range(8):
-            for y in range(x,8):
-                if x==y:
-                    continue
-                if (round((Tricks).iloc[x,y] - (Tricks).iloc[7-x,7-y], i_tricks)!=0):
-                    converged = False
-                    i_tricks-=1
-                    break
-
-    Cards = C_Wins+C_Losses.T
-    Cards = Cards/Total
-
-    i_cards = 0
-    converged = True
-    while converged == True:
-        i_cards+=1
-        for x in range(8):
-            for y in range(x,8):
-                if x==y:
-                    continue
-                if (round((Cards).iloc[x,y] - (Cards).iloc[7-x,7-y], i_cards)!=0):
-                    converged = False
-                    i_cards-=1
-                    break
-    
-    return i_tricks, i_cards
+    return None
