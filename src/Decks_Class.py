@@ -155,6 +155,7 @@ class Deck_Array():
         # move decks from to_load to loaded
         path = PATH_TO_LOAD + f"seed_{self.seed}.npz"
         os.rename(path, path.replace(PATH_TO_LOAD, PATH_LOADED))
+        os.rename(PATH_LOADED+f"seed_{self.seed}.npz", PATH_LOADED+f"seed_{self.seed}_(hand_size{self.hand_size}).npz")
 
         return None
         
