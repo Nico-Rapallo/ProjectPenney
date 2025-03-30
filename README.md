@@ -5,7 +5,7 @@
 ### March 2024
 
 ## Overview
-This repository generates and scores decks for the card version of Penney's Game and creates heatmap visualizations of win rates. It is compatable with what any n-card variant of the game where 2<=n<=7 (7 is arbitrary cut-off) and both trick and total card scoring variants. It contains 1-million decks pre-generated and scored as well as win/loss rate heatmap visualizations.
+This repository generates and scores decks for the card version of Penney's Game and creates heatmap visualizations of win/loss rates. It is compatable with what any n-card variant of the game where 2<=n<=7 (7 is arbitrary cut-off) and both trick and total card scoring variants. It contains 1-million decks pre-generated and scored as well as win/loss rate heatmap visualizations.
 
 ---
 
@@ -21,7 +21,7 @@ Sync uv sync:
 
 Run main:
 
-`main.py`
+`uv run main.py`
 
 ---
 
@@ -43,25 +43,27 @@ Run main:
 
 - engine.py: Contains ProjectPenney code datadashboard will need to run in a class for it to use.
 
-- used_seeds.npy: Is array which keeps track of used seeds for reproducability.
+- used_seeds.npy: Is an array which keeps track of used seeds for reproducability.
 
-- `Scores/`: Contains matrices of all wins/losses for given hand size and scoring method. Files follow naming pattern: `{Scoring method: T or C}_{Wins or Losses}_hand_size{hand size: number 2 to 7}.npy`
+- `Scores/`: 
+    -  Contains matrices of all wins/losses for given hand size and scoring method. 
+    - Files follow naming pattern: `Scores/{Scoring method: T or C}_{Wins or Losses}_hand_size{hand size: number 2 to 7}.npy`
 
 - `Decks/`: 
     -  `to_load/`: Where decks are store temporarily before scoring but after generation
     - `loaded/`: Where scored decks are stored. Note: I have deleted all stored decks in order to push to github, but can still be verified through seed, numdecks, and score tables
-    - File name of decks follow patter: `{to_load / loaded}/seed{seed number: integer}_(hand_size{hand_size: number 2 to 7}).npz`
+    - File name of decks follow patter: `Decks/{to_load / loaded}/seed{seed number: integer}_(hand_size{hand_size: number 2 to 7}).npz`
 
 - `Decks_Counts/`: 
     - Contains count of all decks run for each seed
-    - Individual counts stored with file path pattern: `Deck_Count_hand_size{hand size: number 2 to 7}.npy`
+    - Individual counts stored with file path pattern: `Decks_Counts/Deck_Count_hand_size{hand size: number 2 to 7}.npy`
 
 `figures/`
-    - All visualizations are stored in figures. File path of figures follow pattern: `{Cards or Tricks}_hand_size_{hand size: number 2 to 7}.npy`
+- All visualizations are stored in figures. 
+- File path of figures follow pattern: `figures/{Cards or Tricks}_hand_size_{hand size: number 2 to 7}.npy`
 
 main.py:
 - Generates and scores n decks based on user input. Updates scores and visualizations.
-
 - Gives user option to 
     0) Launch interface, 
     1) Run default 100k decks with hand size 3, 
