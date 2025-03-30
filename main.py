@@ -1,11 +1,13 @@
 from src.Decks_Class import Deck_Array
 from src.visualization import gen_heatmap
 from src.helpers import clear_all
+from src.datadashboard import  DataDashboard
 
 def too_large(min: int, max: int, text:str) -> int:
     '''
     Makes sure user input is valid. 
     Repeats question until valid input.
+    Returns : output (int), valid user input
     '''
 
     # Ask for user input
@@ -32,17 +34,24 @@ def too_large(min: int, max: int, text:str) -> int:
     
 
 def run_program(num_decks:int, hand_size:int) -> None:
+    '''
+    Runs all steps of Deck_Array
+    '''
     # Create new decks_array
     decks = Deck_Array(num_decks, hand_size)
+    print('Decks Generated')
     # Score decks
     decks.run_decks_array()
+    print('Decks Scored')
     # Generate visualizations
-    gen_heatmap(hand_size)
+    gen_heatmap(hand_size, True)
+    gen_heatmap(hand_size, False)
+    print('Heatmaps Generated')
     return None
 
 if __name__ == '__main__':
 
-    options = too_large(0, 3, 'Input:\n 1: to run with defualt settings\n 2: to run with custom settings\n 3: to clear all contents')
+    options = too_large(-1, 3, 'Input:\n 0: Try my PyQt5 Interface (Still work in progress)\n 1: to run with defualt settings\n 2: to run with custom settings\n 3: to clear all contents')
     if options == 1:
         num_decks = 500_000
         hand_size = 3
@@ -55,15 +64,16 @@ if __name__ == '__main__':
 
         # Could theoretically go higher than 7, but it starts taking longer and longer to run. 
         # Don't want user to accidently start running code that takes much longer than they realize
-        # Also do not really need variation that goes that high
-        # Allow user to make hang_size 1 even though that is stupid
-        hand_size = too_large(0, 7, 'How many cards in the hand size? (7 maximum)')
+        # Also do not really need variation of game that goes that high
+        hand_size = too_large(1, 7, 'How many cards in the hand size? (7 maximum)')
 
         run_program(num_decks, hand_size)
 
     elif options == 3:
         clear_all()
 
+    elif options == 0:
+        DataDashboard()
     else: print('Something went wrong')
 
     print('End')

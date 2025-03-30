@@ -4,44 +4,45 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
-def gen_heatmap(hand_size:int = 3) -> None:
+def gen_heatmap(hand_size:int = 3, trick:bool=True, wins:bool=True) -> plt.Figure:
     '''
     Generates heatmaps for cards and tricks. Takes hand size as arguement. 
     
-    Returns: None
+    Returns: plt.Figure
     '''
 
-    # Loads Win and Loss matrices for Tricks and Cards of certain hand size
-    Trick_Wins = np.load(SCORES_PATH + 'T_Wins_hand_size' + str(hand_size) + '.npy')
-    Trick_Losses = np.load(SCORES_PATH + 'T_Losses_hand_size' + str(hand_size) + '.npy')
-    Cards_Wins = np.load(SCORES_PATH + 'C_Wins_hand_size' + str(hand_size) + '.npy')
-    Cards_Losses = np.load(SCORES_PATH + 'C_Losses_hand_size' + str(hand_size) + '.npy')
+   
 
     # Loads number of total generated and scored decks of certain hand size. 
     total = np.load('src/Deck_Counts/Deck_Counts_hand_size' + str(hand_size) + '.npy')
 
-    # Calculates win and loss percentage matrices for tricks
-    trick_win_percent = (Trick_Wins)/total
-    trick_loss_percent = (Trick_Losses)/total
+    if trick:
+        # Loads Win and Loss matrices for Tricks of certain hand size
+        Trick_Wins = np.load(SCORES_PATH + 'T_Wins_hand_size' + str(hand_size) + '.npy')
+        Trick_Losses = np.load(SCORES_PATH + 'T_Losses_hand_size' + str(hand_size) + '.npy')
+        # Calculates win and loss percentage matrices for tricks
+        trick_win_percent = (Trick_Wins)/total
+        trick_loss_percent = (Trick_Losses)/total
 
-    # Create tricks figures
-    create_graphs(trick_win_percent, trick_loss_percent, total, 'Tricks', hand_size)
+        # Create tricks figures
+        return create_graphs(trick_win_percent, trick_loss_percent, total, 'Tricks', hand_size)
+    else:
+        # Loads Win and Loss matrices for Cards of certain hand size
+        Cards_Wins = np.load(SCORES_PATH + 'C_Wins_hand_size' + str(hand_size) + '.npy')
+        Cards_Losses = np.load(SCORES_PATH + 'C_Losses_hand_size' + str(hand_size) + '.npy')
+        # Calculates win and loss percentage matrices for cards
+        cards_win_percent = (Cards_Wins)/total
+        cards_loss_percent = (Cards_Losses)/total
 
-    # Calculates win and loss percentage matrices for cards
-    cards_win_percent = (Cards_Wins)/total
-    cards_loss_percent = (Cards_Losses)/total
+        # Create cards figures
+        return create_graphs(cards_win_percent, cards_loss_percent, total, 'Cards', hand_size)
 
-    # Create cards figures
-    create_graphs(cards_win_percent, cards_loss_percent, total, 'Cards', hand_size)
-    
-    return None
-
-def create_graphs(win:pd.DataFrame, loss:pd.DataFrame, total:int, name:str, hand_size:int = 3)->None:
+def create_graphs(win:pd.DataFrame, loss:pd.DataFrame, total:int, name:str, hand_size:int = 3)->plt.Figure:
     '''
     Function takes in Dataframes of Win Percentage and Loss Percentage.
     Creates and saves a figure with name.
 
-    Returns: None
+    Returns: plt.Figure
     '''
 
     # Masks diagonal
@@ -113,3 +114,4 @@ def create_graphs(win:pd.DataFrame, loss:pd.DataFrame, total:int, name:str, hand
     
     # Save figure with correct trick/card label and hand size
     plt.savefig(f'figures/{name}_hand_size_{hand_size}_heatmap.png')
+    return fig

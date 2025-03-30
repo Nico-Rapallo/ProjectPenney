@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 
+
 # Set half_deck_size (can be changed later for other variations)
 HALF_DECK_SIZE = 26
 
@@ -65,4 +66,9 @@ def clear_all() -> None:
         if not(file == '.DS_Store' or file == '.ipynb_checkpoints'):
             os.remove('figures/' + file)
     
+    return None
+
+def check_directory(path: str) -> None:
+    if not os.path.exists(path):
+        os.mkdir(path)
     return None

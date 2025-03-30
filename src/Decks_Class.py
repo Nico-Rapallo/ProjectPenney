@@ -3,6 +3,7 @@ from tqdm import tqdm
 import os
 from src.processing import add_tricks
 from src.helpers import debugger_factory, HALF_DECK_SIZE, HAND_SIZE, PATH_LOADED, PATH_TO_LOAD, SCORES_PATH
+from src.visualization import gen_heatmap
 from numba import jit
 
 class Deck_Array():
