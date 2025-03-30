@@ -5,7 +5,7 @@
 ### March 2024
 
 ## Overview
-This repository generates and scores decks for the card version of Penney's Game and creates heatmap visualizations of win/loss rates. It is compatable with what any n-card variant of the game where 2<=n<=7 (7 is arbitrary cut-off) and both trick and total card scoring variants. It contains 1-million decks pre-generated and scored as well as win/loss rate heatmap visualizations.
+This repository generates and scores decks for the card version of Penney's Game and creates heatmap visualizations of win/loss rates. It scores for both trick and total card scoring variants. It is compatable with what any n-card variant of the game where 2<=n<=7 (7 is arbitrary cut-off). It contains 1-million decks pre-generated and scored as well as win/loss rate heatmap visualizations for every hand-size.
 
 ---
 
@@ -62,7 +62,7 @@ Run main:
 - All visualizations are stored in figures. 
 - File path of figures follow pattern: `figures/{Cards or Tricks}_hand_size_{hand size: number 2 to 7}.npy`
 
-main.py:
+`main.py`:
 - Generates and scores n decks based on user input. Updates scores and visualizations.
 - Gives user option to 
     0) Launch interface, 
