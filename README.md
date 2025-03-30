@@ -23,6 +23,15 @@ Run main:
 
 `uv run main.py`
 
+Input:
+- `0`: To try out PyQt5 Interface (Still a work in progress)
+- `1`: To run program with default parameters (100k decks and hand size 3)
+- `2`: Launch terminal interface
+    - Enter number of decks (0 - 1,000,000)
+    - Enter hand size (2-7)
+- `3`: Clear all contents (includes decks, visualization, and stored seeds)
+
+
 ---
 
 ## Files included:
@@ -65,10 +74,10 @@ Run main:
 `main.py`:
 - Generates and scores n decks based on user input. Updates scores and visualizations.
 - Gives user option to 
-    0) Launch interface, 
-    1) Run default 100k decks with hand size 3, 
-    2) Launch terminal interface for custom number of decks and cards, or 
-    3) Clear all contents
+    - Launch interface, 
+    - Run default 100k decks with hand size 3, 
+    - Launch terminal interface for custom number of decks and cards, or 
+    - Clear all contents
 
 ---
 
