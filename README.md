@@ -46,9 +46,9 @@ Input:
 
 - visualization.py: Contains code to visualize results as a heatmap.
 
-- datadashboard.py: Contains code for assembling PyQt5 user interface.
+- datadashboard.py: Contains code for assembling PyQt5 user interface. [Code implemented from Professor Ron Smith (TheRonzor)]
 
-- qtcomponents.py: Includes code for base parts / widgets for the datadashboard.
+- qtcomponents.py: Includes code for base parts / widgets for the datadashboard.[Code implemented from Professor Ron Smith (TheRonzor)]
 
 - engine.py: Contains ProjectPenney code datadashboard will need to run in a class for it to use.
 
